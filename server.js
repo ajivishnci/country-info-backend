@@ -8,6 +8,12 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cors());
 
+// Handle SIGTERM signal
+process.on('SIGTERM', () => {
+  console.info('Received SIGTERM signal. Closing server gracefully.');
+  process.exit(0);
+});
+
 app.get('/country/:name', async (req, res) => {
   try {
     const { name } = req.params;
@@ -20,6 +26,11 @@ app.get('/country/:name', async (req, res) => {
   }
 });
 
-// app.listen(PORT, () => {
-//   console.log(`Server is running on http://localhost:${PORT}`);
-// });
+// Start the server
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+  });
+}
+
+export default app;
