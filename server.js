@@ -6,7 +6,12 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
-app.use(cors());
+
+app.use(cors({
+  origin: 'https://country-backend-dh8e.onrender.com',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+}));
 
 // Handle SIGTERM signal
 process.on('SIGTERM', () => {
